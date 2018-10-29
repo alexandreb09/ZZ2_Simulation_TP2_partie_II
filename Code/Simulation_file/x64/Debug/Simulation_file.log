@@ -1,10 +1,8 @@
-﻿  AssemblyInfo.cpp
-  Entree.cpp
+﻿  Client.cpp
   File.cpp
   Machine.cpp
-  simulation.cpp
   Simulation_file.cpp
-  Client.cpp
+  simulation.cpp
   Génération de code en cours...
   AssemblyInfo.obj : module MSIL détecté ; liens incrémentiels désactivés pour MSIL ; édition de liens complète en cours
-  Simulation_file.vcxproj -> D:\1.Cours\ISIMA\ZZ2\Simulation\Exo1\Code\x64\Debug\Simulation_file.exe
+  Simulation_file.vcxproj -> D:\1.Cours\ISIMA\ZZ2\Simulation\TP2\Exo2\Code\x64\Debug\Simulation_file.exe

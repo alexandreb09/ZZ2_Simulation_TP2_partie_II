@@ -1,10 +1,11 @@
 #include "Client.h"
 
-Client::Client() :id(0), date_entree_syst(0) {}
 
-Client::Client(int id, int des) : id(id), date_entree_syst(des) {}
+Client::Client() :id(0), date_entree_syst(0), nb_machines_vues(0) {}
 
-Client::Client(int id, int des, int dss):id(id), date_entree_syst(des), date_sortie_syst(dss) {}
+Client::Client(int id, int des) : id(id), date_entree_syst(des), nb_machines_vues(0) {}
+
+Client::Client(int id, int des, int dss):id(id), date_entree_syst(des), date_sortie_syst(dss), nb_machines_vues(0) {}
 
 
 int Client::getId() {
@@ -27,3 +28,18 @@ int Client::getDate_sortie_syst() {
 void Client::setDate_sortie_syst(int n_dss) {
 	date_sortie_syst = n_dss;
 };
+
+int Client::getNb_machines_vues() {
+	return nb_machines_vues;
+}
+void Client::setNb_machines_vues(int nbmv) {
+	nb_machines_vues = nbmv;
+}
+
+int Client::getMachine(int indice) {
+	return gamme[indice];
+}
+void Client::setMachine(int machine) {
+	gamme[nb_machines_vues] = machine;
+	nb_machines_vues++;
+}

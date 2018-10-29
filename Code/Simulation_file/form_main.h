@@ -1,10 +1,11 @@
 #pragma once
 
+#ifndef FORM_MAIN
+#define FORM_MAIN
+
 #include "simulation.h"
 
 namespace Simulation_file {
-	using namespace std;
-	using namespace System;
 	using namespace System::ComponentModel;
 	using namespace System::Collections;
 	using namespace System::Windows::Forms;
@@ -125,7 +126,7 @@ namespace Simulation_file {
 			this->richTextBox1->Location = System::Drawing::Point(655, 43);
 			this->richTextBox1->Margin = System::Windows::Forms::Padding(4);
 			this->richTextBox1->Name = L"richTextBox1";
-			this->richTextBox1->Size = System::Drawing::Size(373, 283);
+			this->richTextBox1->Size = System::Drawing::Size(488, 283);
 			this->richTextBox1->TabIndex = 3;
 			this->richTextBox1->Text = L"";
 			// 
@@ -219,7 +220,7 @@ namespace Simulation_file {
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1061, 762);
+			this->ClientSize = System::Drawing::Size(1180, 762);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->label5);
 			this->Controls->Add(this->textBox4);
@@ -248,10 +249,10 @@ namespace Simulation_file {
 		this->richTextBox1->Clear();
 
 
-		String^ chaineBTN1 = this->textBox1->Text;
-		String^ chaineBTN2 = this->textBox2->Text;
-		String^ chaineBTN3 = this->textBox3->Text;
-		String^ chaineBTN4 = this->textBox4->Text;
+		System::String^ chaineBTN1 = this->textBox1->Text;
+		System::String^ chaineBTN2 = this->textBox2->Text;
+		System::String^ chaineBTN3 = this->textBox3->Text;
+		System::String^ chaineBTN4 = this->textBox4->Text;
 
 		/* this->richTextBox1->AppendText(chaineBTN1);
 		string SNormal1 = msclr::interop::marshal_as<std::string>(chaineBTN1);
@@ -270,3 +271,6 @@ namespace Simulation_file {
 	}
 };
 }
+
+
+#endif

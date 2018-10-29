@@ -1,14 +1,6 @@
 #include "simulation.h"
 
 
-using namespace msclr;
-using namespace msclr::interop;
-using namespace System;
-
-const int libre = 0;
-const int occupe = 1;
-const int bloque = 2;
-
 void simuler(int duree_sim, int duree_entre_2_cl, int duree_traitement_cl_m1, int duree_traitement_cl_m2, System::Windows::Forms::RichTextBox^  richTextBox1, System::Windows::Forms::DataVisualization::Charting::Chart^ chart) {
 	File file_m1;
 	File file_m2;
@@ -19,7 +11,7 @@ void simuler(int duree_sim, int duree_entre_2_cl, int duree_traitement_cl_m1, in
 
 	int date_courante = 0;
 
-	while (date_courante <= 990) {
+	while (date_courante <= duree_sim) {
 		/* Recherche DPE la plus petite */
 		int P = getProchainEven(serveur1, serveur2, entree);					// Si PDE entree plus petite	
 
@@ -33,22 +25,6 @@ void simuler(int duree_sim, int duree_entre_2_cl, int duree_traitement_cl_m1, in
 		}
 	}
 
-
-	while (date_courante <= 1010) {
-		/* Recherche DPE la plus petite */
-		int P = getProchainEven(serveur1, serveur2, entree);					// Si PDE entree plus petite	
-
-		switch (P) {
-		case 1: gererEntrer(file_m1, serveur1, entree, date_courante, sortie);
-			break;
-		case 2: gererMachine1(file_m1, file_m2, serveur1, serveur2, entree, date_courante);
-			break;
-		default: gererMachine2(file_m2, serveur1, serveur2, sortie, date_courante);
-			break;
-		}
-	}
-	
-
 	std::ostringstream oss;
 	std::string res;
 
@@ -59,7 +35,11 @@ void simuler(int duree_sim, int duree_entre_2_cl, int duree_traitement_cl_m1, in
 
 	for (Client cl : sortie) {
 		nb_piece++;
-		oss << "id : " << cl.getId() << "   || entree : " << cl.getDate_entree_syst() << "   || sortie : " << cl.getDate_sortie_syst() << "\n";
+		oss << "id : " << cl.getId() << "   || entree : " << cl.getDate_entree_syst() << "   || sortie : " << cl.getDate_sortie_syst() << "   || Gamme : ";
+		for (int i = 0; i < cl.getNb_machines_vues(); i++) {
+			oss << cl.getMachine(i) << " ";
+		}
+		oss << "\n";
 		temps_moyen += cl.getDate_sortie_syst(); // -cl.getDate_entree_syst();
 		chart->Series[0]->Points->AddXY(nb_piece, temps_moyen / nb_piece);
 	}
@@ -93,6 +73,7 @@ void gererMachine1(File & file_m1, File &file_m2, Machine &serveur1, Machine &se
 	else {
 		Client piece = serveur1.getClient_present();					// La piece sort de la machine 1
 		if (serveur2.getEtat() == libre) {								// si m2 libre
+			piece.setMachine(MACHINE2);
 			serveur2.setClient_present(piece);							// Et rentre sur la machine 2
 			serveur2.setDPE(date_courante + serveur2.getDuree_traitement());
 			serveur2.setEtat(occupe);
@@ -103,6 +84,7 @@ void gererMachine1(File & file_m1, File &file_m2, Machine &serveur1, Machine &se
 		if (!file_m1.test_File_Vide()) {
 			Client piece_new;											// Recupération piece file_m1
 			file_m1.suppression_file(piece_new);
+			piece_new.setMachine(MACHINE1);
 			serveur1.setClient_present(piece_new);
 			serveur1.setDPE(date_courante + serveur1.getDuree_traitement());
 			serveur1.setEtat(occupe);
@@ -122,6 +104,7 @@ void gererMachine2(File &file_m2, Machine &serveur1, Machine &serveur2, std::vec
 	if (!file_m2.test_File_Vide()) {
 		Client cl;
 		file_m2.suppression_file(cl);
+		cl.setMachine(MACHINE2);
 		serveur2.setClient_present(cl);
 		serveur2.setDPE(date_courante + serveur2.getDuree_traitement());
 		if (serveur1.getEtat() == bloque) {
@@ -138,7 +121,7 @@ void gererMachine2(File &file_m2, Machine &serveur1, Machine &serveur2, std::vec
 
 void gererEntrer(File & file_m1, Machine &serveur1, Entree & entree, int & date_courante, std::vector<Client> & sortie) {
 	date_courante = entree.getDPE();
-	Client cl(entree.getDernier_numero(),date_courante);
+	Client cl(entree.getDernier_numero(), date_courante);
 	entree.setDernier_numero(entree.getDernier_numero()+1);
 	entree.setDPE(date_courante + entree.getDuree_inter_arrivee());
 	if (file_m1.test_File_pleine()) {
@@ -147,6 +130,7 @@ void gererEntrer(File & file_m1, Machine &serveur1, Entree & entree, int & date_
 	}
 	else {
 		if (libre == serveur1.getEtat()) {
+			cl.setMachine(MACHINE1);
 			serveur1.setEtat(occupe);
 			serveur1.setClient_present(cl);
 			serveur1.setDPE(date_courante + serveur1.getDuree_traitement());
@@ -175,10 +159,38 @@ void afficherTextbox(std::string str, System::Windows::Forms::RichTextBox^  rich
 	std::ostringstream oss;
 	oss << str;
 	std::string ch = oss.str();
-	String^ result = marshal_as<String^>(ch);
+	System::String^ result = gcnew System::String(ch.c_str());
 	richTextBox1->AppendText(result);
 }
 
+/* Retourne 1 = machine B ou 2 machine C*/
+int choix_Apres_MachA(int q) {
+	double proba = rand() / (double)RAND_MAX;
+	int rep = 1;
+	if (proba > q) {
+		rep = 2;
+	}
+	return rep;
+}
+
+int choix_Apres_MachB(int p) {
+	double proba = rand() / (double)RAND_MAX;
+	int rep = SORTIE;
+	if (proba > p) {
+		rep = MACHINE1;
+	}
+	return rep;
+}
+
+/* Ici identique choix_Apres_MachC */
+int choix_Apres_MachC(int p) {
+	double proba = rand() / (double)RAND_MAX;
+	int rep = SORTIE;
+	if (proba > p) { 
+		rep = MACHINE1;
+	}
+	return rep;
+}
 
 
 bool sortByID(Client &lhs, Client &rhs) { return lhs.getId() < rhs.getId(); }

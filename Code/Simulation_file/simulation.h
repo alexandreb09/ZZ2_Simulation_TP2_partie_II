@@ -3,19 +3,28 @@
 #ifndef SIMULATION
 #define SIMULATION
 
+
 #include <ostream>
 #include <sstream>
 #include <string>
-#include <msclr\marshal_cppstd.h>
-#include <vector>
-#include <algorithm>
 
+#include <algorithm>
+#include <cstdlib>						// aléatoire
+#include <vector>
+
+#include "Client.h"
 #include "File.h"
 #include "Machine.h"
 #include "Entree.h"
-#include "Client.h"
 
 
+const int libre = 0;
+const int occupe = 1;
+const int bloque = 2;
+const int MACHINE1 = 0;
+const int MACHINE2 = 1;
+const int MACHINE3 = 2;
+const int SORTIE = 3;
 
 //==============================================
 
@@ -28,5 +37,9 @@ void simuler(int duree_sim, int duree_entre_2_cl, int duree_traitement_cl_m1, in
 int getProchainEven(const Machine serveur1, const Machine serveur2, const Entree entree);
 
 bool sortByID(Client &lhs, Client &rhs);
+
+int choix_Apres_MachA(int q);
+int choix_Apres_MachB(int q);
+int choix_Apres_MachC(int q);
 
 #endif

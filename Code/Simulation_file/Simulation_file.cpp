@@ -2,18 +2,13 @@
 
 #include "form_main.h"
 
-using namespace System;
-using namespace System::Windows::Forms;
+[System::STAThread]
 
-
-[STAThread]
-
-int main(array<System::String ^> ^args)
-{
-	Application::EnableVisualStyles();
-	Application::SetCompatibleTextRenderingDefault(false);
+int main(array<System::String ^> ^args){
+	System::Windows::Forms::Application::EnableVisualStyles();
+	System::Windows::Forms::Application::SetCompatibleTextRenderingDefault(false);
 	Simulation_file::form_main form;
-	Application::Run(%form);
+	System::Windows::Forms::Application::Run(%form);
 
 	return 0;
 }

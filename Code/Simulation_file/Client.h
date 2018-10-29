@@ -1,10 +1,17 @@
 #pragma once
 
+#ifndef CLIENT
+#define CLIENT
+
+
+const int taille_max_gamme = 20;
 
 class Client {
 	int id;
 	int date_entree_syst;
 	int date_sortie_syst;
+	int gamme[taille_max_gamme];
+	int nb_machines_vues;
 
 	public:
 		Client();
@@ -19,4 +26,13 @@ class Client {
 
 		int getDate_sortie_syst();
 		void setDate_sortie_syst(int n_dss);
+
+		int getNb_machines_vues();
+		void setNb_machines_vues(int nbmv);
+
+		int getMachine(int indice);
+		void setMachine(int machine);
 };
+
+
+#endif
