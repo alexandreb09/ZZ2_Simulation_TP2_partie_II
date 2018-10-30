@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef ENTREE
-#define ENTREE
+#ifndef ENTREE_H
+#define ENTREE_H
 
 
 class Entree {

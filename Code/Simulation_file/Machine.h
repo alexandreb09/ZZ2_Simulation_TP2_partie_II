@@ -17,16 +17,16 @@ class Machine{
 		Machine();
 		Machine(int Etat, int date_prochain_event, int dt);
 
-		int getEtat();
+		const int getEtat();
 		void setEtat(int n_Etat);
 
-		int getDPE();
+		const int getDPE();
 		void setDPE(int new_des);
 
-		int getDuree_traitement();
+		const int getDuree_traitement();
 		void setDuree_traitement(int dt);
 
-		Client getClient_present();
+		const Client getClient_present();
 		void setClient_present(Client n_cl);
 
 };

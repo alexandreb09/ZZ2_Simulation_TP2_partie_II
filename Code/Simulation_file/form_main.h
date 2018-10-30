@@ -52,6 +52,8 @@ namespace Simulation_file {
 
 	private: System::Windows::Forms::Label^  label5;
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
+	private: System::Windows::Forms::Label^  label4;
+	private: System::Windows::Forms::TextBox^  textBox5;
 
 
 
@@ -87,6 +89,8 @@ namespace Simulation_file {
 			this->textBox4 = (gcnew System::Windows::Forms::TextBox());
 			this->label5 = (gcnew System::Windows::Forms::Label());
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
+			this->label4 = (gcnew System::Windows::Forms::Label());
+			this->textBox5 = (gcnew System::Windows::Forms::TextBox());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
@@ -154,9 +158,9 @@ namespace Simulation_file {
 			this->label3->Location = System::Drawing::Point(80, 282);
 			this->label3->Margin = System::Windows::Forms::Padding(4, 0, 4, 0);
 			this->label3->Name = L"label3";
-			this->label3->Size = System::Drawing::Size(183, 17);
+			this->label3->Size = System::Drawing::Size(184, 17);
 			this->label3->TabIndex = 8;
-			this->label3->Text = L"Durée traitement machine 1";
+			this->label3->Text = L"Durée traitement machine A";
 			// 
 			// textBox3
 			// 
@@ -173,7 +177,7 @@ namespace Simulation_file {
 			this->chart1->Cursor = System::Windows::Forms::Cursors::Arrow;
 			legend1->Name = L"Legend1";
 			this->chart1->Legends->Add(legend1);
-			this->chart1->Location = System::Drawing::Point(33, 380);
+			this->chart1->Location = System::Drawing::Point(655, 363);
 			this->chart1->Margin = System::Windows::Forms::Padding(4);
 			this->chart1->Name = L"chart1";
 			series1->BackSecondaryColor = System::Drawing::Color::Maroon;
@@ -202,9 +206,9 @@ namespace Simulation_file {
 			this->label5->AutoSize = true;
 			this->label5->Location = System::Drawing::Point(80, 332);
 			this->label5->Name = L"label5";
-			this->label5->Size = System::Drawing::Size(183, 17);
+			this->label5->Size = System::Drawing::Size(184, 17);
 			this->label5->TabIndex = 14;
-			this->label5->Text = L"Durée traitement machine 2";
+			this->label5->Text = L"Durée traitement machine B";
 			// 
 			// pictureBox1
 			// 
@@ -216,11 +220,29 @@ namespace Simulation_file {
 			this->pictureBox1->TabIndex = 15;
 			this->pictureBox1->TabStop = false;
 			// 
+			// label4
+			// 
+			this->label4->AutoSize = true;
+			this->label4->Location = System::Drawing::Point(79, 379);
+			this->label4->Name = L"label4";
+			this->label4->Size = System::Drawing::Size(184, 17);
+			this->label4->TabIndex = 16;
+			this->label4->Text = L"Durée traitement machine C";
+			// 
+			// textBox5
+			// 
+			this->textBox5->Location = System::Drawing::Point(300, 379);
+			this->textBox5->Name = L"textBox5";
+			this->textBox5->Size = System::Drawing::Size(132, 22);
+			this->textBox5->TabIndex = 17;
+			// 
 			// form_main
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
 			this->ClientSize = System::Drawing::Size(1180, 762);
+			this->Controls->Add(this->textBox5);
+			this->Controls->Add(this->label4);
 			this->Controls->Add(this->pictureBox1);
 			this->Controls->Add(this->label5);
 			this->Controls->Add(this->textBox4);
@@ -253,18 +275,20 @@ namespace Simulation_file {
 		System::String^ chaineBTN2 = this->textBox2->Text;
 		System::String^ chaineBTN3 = this->textBox3->Text;
 		System::String^ chaineBTN4 = this->textBox4->Text;
+		System::String^ chaineBTN5 = this->textBox5->Text;
 
 		/* this->richTextBox1->AppendText(chaineBTN1);
 		string SNormal1 = msclr::interop::marshal_as<std::string>(chaineBTN1);
 		string SNormal2 = msclr::interop::marshal_as<std::string>(chaineBTN2);
 		*/
-		if (chaineBTN1 != "" && chaineBTN2 != "" && chaineBTN3!="" && chaineBTN4 !="") {
+		if (chaineBTN1 != "" && chaineBTN2 != "" && chaineBTN3!="" && chaineBTN4 !="" && chaineBTN5 != "") {
 			int duree_entre_2_cl = System::Convert::ToInt32(chaineBTN1);
 			int duree_sim = System::Convert::ToInt32(chaineBTN2);
 			int duree_traitement_cl_m1 = System::Convert::ToInt32(chaineBTN3);
 			int duree_traitement_cl_m2 = System::Convert::ToInt32(chaineBTN4);
+			int duree_traitement_cl_m3 = System::Convert::ToInt32(chaineBTN5);
 
-			simuler(duree_sim, duree_entre_2_cl, duree_traitement_cl_m1, duree_traitement_cl_m2, richTextBox1, chart1);
+			simuler(duree_sim, duree_entre_2_cl, duree_traitement_cl_m1, duree_traitement_cl_m2, duree_traitement_cl_m3, richTextBox1, chart1);
 		}
 
 		
