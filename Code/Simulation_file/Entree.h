@@ -1,9 +1,5 @@
 #pragma once
 
-#ifndef ENTREE_H
-#define ENTREE_H
-
-
 class Entree {
 	int date_prochain_event;
 	int duree_inter_arrivee;
@@ -22,5 +18,3 @@ class Entree {
 		int getDernier_numero();
 		void setDernier_numero(int n_dn);
 };
-
-#endif

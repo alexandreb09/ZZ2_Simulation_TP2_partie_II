@@ -145,7 +145,6 @@
   <ItemGroup>
     <ClInclude Include="Client.h" />
     <ClInclude Include="Entree.h" />
-    <ClInclude Include="File.h" />
     <ClInclude Include="Machine.h" />
     <ClInclude Include="simulation.h" />
     <ClInclude Include="form_main.h">
@@ -159,7 +158,6 @@
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
     <ClCompile Include="Entree.cpp" />
-    <ClCompile Include="File.cpp" />
     <ClCompile Include="Machine.cpp" />
     <ClCompile Include="simulation.cpp" />
     <ClCompile Include="Simulation_file.cpp" />

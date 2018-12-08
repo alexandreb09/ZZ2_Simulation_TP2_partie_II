@@ -1,9 +1,9 @@
 #include "Client.h"
 
 
-Client::Client() :id(0), date_entree_syst(0), nb_machines_vues(0) {}
+Client::Client() :id(0), date_entree_syst(0), date_sortie_syst(-1), nb_machines_vues(0){}
 
-Client::Client(int id, int des) : id(id), date_entree_syst(des), nb_machines_vues(0) {}
+Client::Client(int id, int des) : id(id), date_entree_syst(des), date_sortie_syst(-1), nb_machines_vues(0){}
 
 Client::Client(int id, int des, int dss):id(id), date_entree_syst(des), date_sortie_syst(dss), nb_machines_vues(0) {}
 
@@ -42,4 +42,9 @@ int Client::getMachine(int indice) {
 void Client::setMachine(int machine) {
 	gamme[nb_machines_vues] = machine;
 	nb_machines_vues++;
+}
+
+
+bool operator==(const Client & cl1, const Client & cl2) {
+	return cl1.id == cl2.id;
 }

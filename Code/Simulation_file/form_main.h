@@ -219,6 +219,7 @@ namespace Simulation_file {
 			this->pictureBox1->SizeMode = System::Windows::Forms::PictureBoxSizeMode::AutoSize;
 			this->pictureBox1->TabIndex = 15;
 			this->pictureBox1->TabStop = false;
+			this->pictureBox1->Click += gcnew System::EventHandler(this, &form_main::pictureBox1_Click);
 			// 
 			// label4
 			// 
@@ -293,6 +294,8 @@ namespace Simulation_file {
 
 		
 	}
+private: System::Void pictureBox1_Click(System::Object^  sender, System::EventArgs^  e) {
+}
 };
 }
 

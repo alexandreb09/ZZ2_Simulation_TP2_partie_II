@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef CLIENT
-#define CLIENT
-
 
 const int taille_max_gamme = 20;
 
@@ -32,7 +29,8 @@ class Client {
 
 		int getMachine(int indice);
 		void setMachine(int machine);
+
+		friend bool operator==(const Client & cl1, const Client & cl2);
 };
 
-
-#endif
+bool operator==(const Client & cl1, const Client & cl2);

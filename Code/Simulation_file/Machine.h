@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef MACHINE
-#define MACHINE
-
 #include "Client.h"
 
 const int infini = 9999;
@@ -28,7 +25,4 @@ class Machine{
 
 		const Client getClient_present();
 		void setClient_present(Client n_cl);
-
 };
-
-#endif
