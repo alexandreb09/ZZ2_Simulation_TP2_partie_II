@@ -1,15 +1,15 @@
 #include "simulation.h"
 
 
-void simuler(int duree_sim, int duree_entre_2_cl, int duree_traitement_cl_m1, int duree_traitement_cl_m2, int duree_traitement_cl_m3, System::Windows::Forms::RichTextBox^  richTextBox1, System::Windows::Forms::DataVisualization::Charting::Chart^ chart) {
-	std::vector<Client> sortie;
-	std::queue<Client> file_mA, file_mB, file_mC;
-	Machine serveur_A(libre, infini, duree_traitement_cl_m1);
-	Machine serveur_B(libre, infini, duree_traitement_cl_m2);
-	Machine serveur_C(libre, infini, duree_traitement_cl_m3);
-	Entree entree(libre, duree_entre_2_cl, 0);
+void simuler(int duree_sim, double duree_entre_2_cl, double duree_traitement_cl_m1, double duree_traitement_cl_m2, double duree_traitement_cl_m3, System::Windows::Forms::RichTextBox^  richTextBox1, System::Windows::Forms::DataVisualization::Charting::Chart^ chart) {
+	std::vector<Client_db> sortie;
+	std::queue<Client_db> file_mA, file_mB, file_mC;
+	Machine_db serveur_A(libre, infini, duree_traitement_cl_m1);
+	Machine_db serveur_B(libre, infini, duree_traitement_cl_m2);
+	Machine_db serveur_C(libre, infini, duree_traitement_cl_m3);
+	Entree_db entree(libre, duree_entre_2_cl, 0);
 
-	int date_courante = 0;
+	double date_courante = 0;
 	srand(1);
 
 	while (date_courante <= duree_sim) {
@@ -31,11 +31,11 @@ void simuler(int duree_sim, int duree_entre_2_cl, int duree_traitement_cl_m1, in
 	afficherResultat(serveur_A, serveur_B, serveur_C, sortie, file_mA, file_mB, file_mC, richTextBox1, chart);
 }
 
-void gerer_Machine_A(std::queue<Client> & file_mA, std::queue<Client> &file_mB, std::queue<Client> &file_mC, Machine &serveur_A, Machine &serveur_B, Machine & serveur_C, Entree & entree, int & date_courante) {
+void gerer_Machine_A(std::queue<Client_db> & file_mA, std::queue<Client_db> &file_mB, std::queue<Client_db> &file_mC, Machine_db &serveur_A, Machine_db &serveur_B, Machine_db & serveur_C, Entree_db & entree, double & date_courante) {
 	date_courante = serveur_A.getDPE();
 	int futur_machine = choix_Apres_MachA();
 	if (MACHINE_B == futur_machine) {
-		Client cl = serveur_A.getClient_present();						// La piece sort de la machine 1
+		Client_db cl = serveur_A.getClient_present();						// La piece sort de la machine 1
 		if (libre == serveur_B.getEtat()) {								// si m2 libre
 			cl.setMachine(MACHINE_B);
 			serveur_B.setClient_present(cl);							// Et rentre sur la machine 2
@@ -46,7 +46,7 @@ void gerer_Machine_A(std::queue<Client> & file_mA, std::queue<Client> &file_mB, 
 			file_mB.push(cl);
 		}
 		if (0 != file_mA.size()) {
-			Client piece_new = file_mA.front();											// Recupération piece file_mA
+			Client_db piece_new = file_mA.front();											// Recupération piece file_mA
 			file_mA.pop();
 			piece_new.setMachine(MACHINE_A);
 			serveur_A.setClient_present(piece_new);
@@ -59,7 +59,7 @@ void gerer_Machine_A(std::queue<Client> & file_mA, std::queue<Client> &file_mB, 
 		}
 	}
 	else{
-		Client piece = serveur_A.getClient_present();					// La piece sort de la machine 1
+		Client_db piece = serveur_A.getClient_present();					// La piece sort de la machine 1
 		if (libre == serveur_C.getEtat()) {								// si m2 libre
 			piece.setMachine(MACHINE_B);
 			serveur_C.setClient_present(piece);							// Et rentre sur la machine 2
@@ -70,7 +70,7 @@ void gerer_Machine_A(std::queue<Client> & file_mA, std::queue<Client> &file_mB, 
 			file_mC.push(piece);
 		}
 		if (0 != file_mA.size()) {
-			Client piece_new = file_mA.front();											// Recupération piece file_mA
+			Client_db piece_new = file_mA.front();											// Recupération piece file_mA
 			file_mA.pop();
 			piece_new.setMachine(MACHINE_A);
 			serveur_A.setClient_present(piece_new);
@@ -84,9 +84,9 @@ void gerer_Machine_A(std::queue<Client> & file_mA, std::queue<Client> &file_mB, 
 	}
 }
 
-void gerer_Machine_B(std::queue<Client> &file_mB, std::queue<Client> &file_mA, Machine &serveur_A, Machine &serveur_B, std::vector<Client> & sortie, int & date_courante) {
+void gerer_Machine_B(std::queue<Client_db> &file_mB, std::queue<Client_db> &file_mA, Machine_db &serveur_A, Machine_db &serveur_B, std::vector<Client_db> & sortie, double & date_courante) {
 	date_courante = serveur_B.getDPE();
-	Client cl = serveur_B.getClient_present();
+	Client_db cl = serveur_B.getClient_present();
 	if (SORTIE == choix_Apres_MachB()) {				// La pièce sort
 		cl.setDate_sortie_syst(date_courante);
 		sortie.push_back(cl);
@@ -95,7 +95,7 @@ void gerer_Machine_B(std::queue<Client> &file_mB, std::queue<Client> &file_mA, M
 		file_mA.push(cl);
 	}
 	if (0 != file_mB.size()) {
-		Client cl = file_mB.front();
+		Client_db cl = file_mB.front();
 		file_mB.pop();
 		cl.setMachine(MACHINE_B);
 		serveur_B.setClient_present(cl);
@@ -111,9 +111,9 @@ void gerer_Machine_B(std::queue<Client> &file_mB, std::queue<Client> &file_mA, M
 	}
 }
 
-void gerer_Machine_C(std::queue<Client> &file_mC, std::queue<Client> &file_mA, Machine &serveur_A, Machine &serveur_C, std::vector<Client> & sortie, int & date_courante) {
+void gerer_Machine_C(std::queue<Client_db> &file_mC, std::queue<Client_db> &file_mA, Machine_db &serveur_A, Machine_db &serveur_C, std::vector<Client_db> & sortie, double & date_courante) {
 	date_courante = serveur_C.getDPE();
-	Client cl = serveur_C.getClient_present();
+	Client_db cl = serveur_C.getClient_present();
 	if (SORTIE == choix_Apres_MachB()) {				// La pièce sort
 		cl.setDate_sortie_syst(date_courante);
 		sortie.push_back(cl);
@@ -122,7 +122,7 @@ void gerer_Machine_C(std::queue<Client> &file_mC, std::queue<Client> &file_mA, M
 		file_mA.push(cl);
 	}
 	if (0 != file_mC.size()) {
-		Client cl = file_mC.front() ;
+		Client_db cl = file_mC.front() ;
 		file_mC.pop();
 		cl.setMachine(MACHINE_B);
 		serveur_C.setClient_present(cl);
@@ -139,9 +139,9 @@ void gerer_Machine_C(std::queue<Client> &file_mC, std::queue<Client> &file_mA, M
 }
 
 
-void gererEntrer(std::queue<Client> & file_mA, Machine &serveur_A, Entree & entree, int & date_courante, std::vector<Client> & sortie) {
+void gererEntrer(std::queue<Client_db> & file_mA, Machine_db &serveur_A, Entree_db & entree, double & date_courante, std::vector<Client_db> & sortie) {
 	date_courante = entree.getDPE();
-	Client cl(entree.getDernier_numero(), date_courante);
+	Client_db cl(entree.getDernier_numero(), date_courante);
 	entree.setDernier_numero(entree.getDernier_numero()+1);
 	entree.setDPE(date_courante + entree.getDuree_inter_arrivee());
 	if (libre == serveur_A.getEtat()) {
@@ -156,7 +156,7 @@ void gererEntrer(std::queue<Client> & file_mA, Machine &serveur_A, Entree & entr
 	entree.setDPE(date_courante + entree.getDuree_inter_arrivee());
 }
 
-int getProchainEven(Machine serveur_A, Machine serveur_B, Machine serveur_C, Entree entree) {
+int getProchainEven(Machine_db serveur_A, Machine_db serveur_B, Machine_db serveur_C, Entree_db entree) {
 	int rep = ENTREE; //entree
 	if ((serveur_B.getDPE() <= serveur_A.getDPE()) & (serveur_B.getDPE() <= entree.getDPE()) && serveur_B.getDPE() <= serveur_C.getDPE()){
 		rep = MACHINE_B;
@@ -211,24 +211,27 @@ int choix_Apres_MachC() {
 }
 
 
-bool sortByID(Client &lhs, Client &rhs) { return lhs.getId() < rhs.getId(); }
-bool sortByDateEntree(Client &lhs, Client &rhs) { return lhs.getDate_entree_syst() < rhs.getDate_sortie_syst(); }
+bool sortByID(Client_db &lhs, Client_db &rhs) { return lhs.getId() < rhs.getId(); }
+bool sortByDateEntree(Client_db &lhs, Client_db &rhs) { return lhs.getDate_entree_syst() < rhs.getDate_sortie_syst(); }
+
+bool operator==(const Client_db & cl1, const Client_db & cl2);
 
 /*=======================================================*/
 /*							AFFICHAGE   				 */		
 /*=======================================================*/
 
-void afficherResultat(Machine serveur_A, Machine serveur_B, Machine serveur_C, std::vector<Client> sortie, std::queue<Client> &file_mA, std::queue<Client> &file_mB, std::queue<Client> &file_mC, System::Windows::Forms::RichTextBox^  richTextBox1, System::Windows::Forms::DataVisualization::Charting::Chart^ chart) {
+void afficherResultat(Machine_db serveur_A, Machine_db serveur_B, Machine_db serveur_C, std::vector<Client_db> sortie, std::queue<Client_db> &file_mA, std::queue<Client_db> &file_mB, std::queue<Client_db> &file_mC, System::Windows::Forms::RichTextBox^  richTextBox1, System::Windows::Forms::DataVisualization::Charting::Chart^ chart) {
 	std::ostringstream oss;
 	std::ostringstream oss_tmp;
 	std::string res;
 
-	Client cl;
-	int nb_piece = 0, temps_moyen = 0;
+	Client_db cl;
+	int nb_piece = 0;
+	double temps_moyen = 0;
 
 	std::sort(sortie.begin(), sortie.end(), sortByID);
 
-	for (Client cl : sortie) {
+	for (Client_db cl : sortie) {
 		nb_piece++;
 		oss << "id : " << cl.getId() << "   || entree : " << cl.getDate_entree_syst() << "   || sortie : " << cl.getDate_sortie_syst() << "   || Gamme : ";
 		for (int i = 0; i < cl.getNb_machines_vues(); i++) {
@@ -248,8 +251,8 @@ void afficherResultat(Machine serveur_A, Machine serveur_B, Machine serveur_C, s
 }
 
 
-void afficher_Contenu_machine(std::ostringstream &oss, Machine machine, std::queue<Client> file, int numero) {
-	Client cl;
+void afficher_Contenu_machine(std::ostringstream &oss, Machine_db machine, std::queue<Client_db> file, int numero) {
+	Client_db cl;
 	oss << "\nListe des pièces dans la machine " << numero << ":\n";
 	cl = machine.getClient_present();
 	oss << "id : " << cl.getId() << "   || entree : " << cl.getDate_entree_syst() << "   || sortie : " << cl.getDate_sortie_syst() << "\n";

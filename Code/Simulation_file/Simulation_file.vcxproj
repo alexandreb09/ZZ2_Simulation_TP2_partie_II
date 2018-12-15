@@ -157,11 +157,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="AssemblyInfo.cpp" />
-    <ClCompile Include="Entree.cpp" />
-    <ClCompile Include="Machine.cpp" />
     <ClCompile Include="simulation.cpp" />
     <ClCompile Include="Simulation_file.cpp" />
-    <ClCompile Include="Client.cpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="app.ico" />

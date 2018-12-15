@@ -54,6 +54,7 @@ namespace Simulation_file {
 	private: System::Windows::Forms::PictureBox^  pictureBox1;
 	private: System::Windows::Forms::Label^  label4;
 	private: System::Windows::Forms::TextBox^  textBox5;
+	private: System::Windows::Forms::Button^  button2;
 
 
 
@@ -91,6 +92,7 @@ namespace Simulation_file {
 			this->pictureBox1 = (gcnew System::Windows::Forms::PictureBox());
 			this->label4 = (gcnew System::Windows::Forms::Label());
 			this->textBox5 = (gcnew System::Windows::Forms::TextBox());
+			this->button2 = (gcnew System::Windows::Forms::Button());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->chart1))->BeginInit();
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->pictureBox1))->BeginInit();
 			this->SuspendLayout();
@@ -108,11 +110,12 @@ namespace Simulation_file {
 			// 
 			// textBox1
 			// 
-			this->textBox1->Location = System::Drawing::Point(300, 234);
+			this->textBox1->Location = System::Drawing::Point(300, 188);
 			this->textBox1->Margin = System::Windows::Forms::Padding(4);
 			this->textBox1->Name = L"textBox1";
 			this->textBox1->Size = System::Drawing::Size(132, 22);
 			this->textBox1->TabIndex = 1;
+			this->textBox1->TextChanged += gcnew System::EventHandler(this, &form_main::textBox1_TextChanged);
 			// 
 			// label1
 			// 
@@ -130,7 +133,7 @@ namespace Simulation_file {
 			this->richTextBox1->Location = System::Drawing::Point(655, 43);
 			this->richTextBox1->Margin = System::Windows::Forms::Padding(4);
 			this->richTextBox1->Name = L"richTextBox1";
-			this->richTextBox1->Size = System::Drawing::Size(488, 283);
+			this->richTextBox1->Size = System::Drawing::Size(630, 283);
 			this->richTextBox1->TabIndex = 3;
 			this->richTextBox1->Text = L"";
 			// 
@@ -146,7 +149,7 @@ namespace Simulation_file {
 			// 
 			// textBox2
 			// 
-			this->textBox2->Location = System::Drawing::Point(300, 188);
+			this->textBox2->Location = System::Drawing::Point(300, 235);
 			this->textBox2->Margin = System::Windows::Forms::Padding(4);
 			this->textBox2->Name = L"textBox2";
 			this->textBox2->Size = System::Drawing::Size(132, 22);
@@ -237,11 +240,22 @@ namespace Simulation_file {
 			this->textBox5->Size = System::Drawing::Size(132, 22);
 			this->textBox5->TabIndex = 17;
 			// 
+			// button2
+			// 
+			this->button2->Location = System::Drawing::Point(496, 346);
+			this->button2->Name = L"button2";
+			this->button2->Size = System::Drawing::Size(114, 55);
+			this->button2->TabIndex = 18;
+			this->button2->Text = L"Aide erreur type";
+			this->button2->UseVisualStyleBackColor = true;
+			this->button2->Click += gcnew System::EventHandler(this, &form_main::button2_Click);
+			// 
 			// form_main
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(8, 16);
 			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
-			this->ClientSize = System::Drawing::Size(1180, 762);
+			this->ClientSize = System::Drawing::Size(1298, 762);
+			this->Controls->Add(this->button2);
 			this->Controls->Add(this->textBox5);
 			this->Controls->Add(this->label4);
 			this->Controls->Add(this->pictureBox1);
@@ -265,39 +279,45 @@ namespace Simulation_file {
 			this->PerformLayout();
 
 		}
+
 #pragma endregion
-	private: System::Void label1_Click(System::Object^  sender, System::EventArgs^  e) {
-	}
-	private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
-		this->richTextBox1->Clear();
-
-
-		System::String^ chaineBTN1 = this->textBox1->Text;
-		System::String^ chaineBTN2 = this->textBox2->Text;
-		System::String^ chaineBTN3 = this->textBox3->Text;
-		System::String^ chaineBTN4 = this->textBox4->Text;
-		System::String^ chaineBTN5 = this->textBox5->Text;
-
-		/* this->richTextBox1->AppendText(chaineBTN1);
-		string SNormal1 = msclr::interop::marshal_as<std::string>(chaineBTN1);
-		string SNormal2 = msclr::interop::marshal_as<std::string>(chaineBTN2);
-		*/
-		if (chaineBTN1 != "" && chaineBTN2 != "" && chaineBTN3!="" && chaineBTN4 !="" && chaineBTN5 != "") {
-			int duree_entre_2_cl = System::Convert::ToInt32(chaineBTN1);
-			int duree_sim = System::Convert::ToInt32(chaineBTN2);
-			int duree_traitement_cl_m1 = System::Convert::ToInt32(chaineBTN3);
-			int duree_traitement_cl_m2 = System::Convert::ToInt32(chaineBTN4);
-			int duree_traitement_cl_m3 = System::Convert::ToInt32(chaineBTN5);
-
-			simuler(duree_sim, duree_entre_2_cl, duree_traitement_cl_m1, duree_traitement_cl_m2, duree_traitement_cl_m3, richTextBox1, chart1);
+		private: System::Void label1_Click(System::Object^  sender, System::EventArgs^  e) {
 		}
+		private: System::Void button1_Click(System::Object^  sender, System::EventArgs^  e) {
+			this->richTextBox1->Clear();
 
-		
+
+			System::String^ chaineBTN1 = this->textBox1->Text;
+			System::String^ chaineBTN2 = this->textBox2->Text;
+			System::String^ chaineBTN3 = this->textBox3->Text;
+			System::String^ chaineBTN4 = this->textBox4->Text;
+			System::String^ chaineBTN5 = this->textBox5->Text;
+
+			if (chaineBTN1 != "" && chaineBTN2 != "" && chaineBTN3!="" && chaineBTN4 !="" && chaineBTN5 != "") {
+				int duree_sim = System::Convert::ToInt32(chaineBTN1);
+				double duree_entre_2_cl = System::Convert::ToDouble(chaineBTN2);
+				double duree_traitement_cl_m1 = System::Convert::ToDouble(chaineBTN3);
+				double duree_traitement_cl_m2 = System::Convert::ToDouble(chaineBTN4);
+				double duree_traitement_cl_m3 = System::Convert::ToDouble(chaineBTN5);
+
+				simuler(duree_sim, duree_entre_2_cl, duree_traitement_cl_m1, duree_traitement_cl_m2, duree_traitement_cl_m3, richTextBox1, chart1);
+			}
+		}
+		private: System::Void pictureBox1_Click(System::Object^  sender, System::EventArgs^  e) {
+		}
+		private: System::Void textBox1_TextChanged(System::Object^  sender, System::EventArgs^  e) {
+		}
+	private: System::Void button2_Click(System::Object^  sender, System::EventArgs^  e) {
+		this->richTextBox1->Clear();
+		std::ostringstream oss;
+		oss << "Si erreur de type levée :\n\n    - Penser à mettre une \",\" (VIRGULE) pour les nombres réels (et pas un \".\" POINT) ";
+		oss << "\n\nLes types actuels sont :\n    - Durée simulation : ENTIER\n    - Durée entre deux clients : FLOAT";
+		oss << "\n    - Durée traitement machine i : FLOAT";
+		std::string ch = oss.str();
+		System::String^ result = gcnew System::String(ch.c_str());
+		richTextBox1->AppendText(result);
 	}
-private: System::Void pictureBox1_Click(System::Object^  sender, System::EventArgs^  e) {
-}
 };
 }
-
 
 #endif
