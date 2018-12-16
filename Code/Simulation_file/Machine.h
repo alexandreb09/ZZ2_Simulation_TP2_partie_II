@@ -9,6 +9,10 @@ class Machine{
 	int Etat;
 	T date_prochain_event;
 	T duree_traitement;
+
+	T date_debut_occupation_file;				// Stats
+	T duree_occupation;						// Stats
+
 	Client<T> client_present;
 
 	public:
@@ -26,6 +30,9 @@ class Machine{
 
 		Client<T> getClient_present();
 		void setClient_present(Client<T> n_cl);
+
+		void MAJ_Duree_occupation(T date_courante, size_t nb_elem);	
+		T getDuree_occupation();
 };
 
 template <typename T>
@@ -70,4 +77,14 @@ Client<T> Machine<T>::getClient_present() {
 template <typename T>
 void Machine<T>::setClient_present(Client<T> n_cl) {
 	client_present = n_cl;
+}
+
+template<typename T>
+void Machine<T>::MAJ_Duree_occupation(T date_courante, size_t nb_elem) {
+	duree_occupation += nb_elem*(date_courante- date_debut_occupation_file);
+	date_debut_occupation_file = date_courante;
+}
+template <typename T>
+T Machine<T>::getDuree_occupation() {
+	return duree_occupation;
 }
